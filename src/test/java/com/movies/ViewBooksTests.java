@@ -1,7 +1,6 @@
 package com.movies;
 
-import com.movies.controller.ViewBooksController;
-import com.movies.model.ListOfMovies;
+import com.movies.controller.MoviesController;
 import com.movies.model.Movie;
 import com.movies.service.MoviesService;
 import org.junit.Test;
@@ -20,7 +19,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(ViewBooksController.class)
+@WebMvcTest(MoviesController.class)
 public class ViewBooksTests {
 
   @Autowired
@@ -41,29 +40,22 @@ public class ViewBooksTests {
 
   @Test
   public void testGetAllMovies() throws Exception {
-    ArrayList<ListOfMovies> list = this.createListOfMovies();
+    ArrayList<String> list = this.createListOfMovies();
 
     given(this.moviesService.getMovies())
         .willReturn(list);
 
     this.mockMvc.perform(MockMvcRequestBuilders.get("/movies"))
         .andExpect(status().isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.[0].id").value("1"))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.[0].movieTitle").value("Star Wars"));
+        .andExpect(MockMvcResultMatchers.jsonPath("$.[0]").value("Star Wars"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.[1]").value("Conan"));
   }
 
-  private ArrayList<ListOfMovies> createListOfMovies() {
-    ListOfMovies firstMovie = new ListOfMovies();
-    firstMovie.setId(1L);
-    firstMovie.setMovieTitle("Star Wars");
+  private ArrayList<String> createListOfMovies() {
 
-    ListOfMovies secondMovie = new ListOfMovies();
-    secondMovie.setId(2L);
-    secondMovie.setMovieTitle("Conan");
-
-    ArrayList<ListOfMovies> listOfMovies = new ArrayList<>();
-    listOfMovies.add(firstMovie);
-    listOfMovies.add(secondMovie);
+    ArrayList<String> listOfMovies = new ArrayList<>();
+    listOfMovies.add("Star Wars");
+    listOfMovies.add("Conan");
     return listOfMovies;
   }
 

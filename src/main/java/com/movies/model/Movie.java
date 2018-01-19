@@ -1,12 +1,9 @@
 package com.movies.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -16,10 +13,6 @@ public class Movie {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
-
-  @OneToOne(cascade = CascadeType.ALL)
-  @PrimaryKeyJoinColumn
-  private ListOfMovies listOfMovies;
 
   private String title;
 
@@ -62,5 +55,15 @@ public class Movie {
 
   public void setMovieDescription(String movieDescription) {
     this.movieDescription = movieDescription;
+  }
+
+  @Override
+  public String toString() {
+    return "Movie{" +
+        "id=" + id +
+        ", title='" + title + '\'' +
+        ", movieLength='" + movieLength + '\'' +
+        ", movieDescription='" + movieDescription + '\'' +
+        '}';
   }
 }

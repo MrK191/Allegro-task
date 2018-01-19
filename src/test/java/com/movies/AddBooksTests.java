@@ -1,7 +1,7 @@
 package com.movies;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.movies.controller.AddBooksController;
+import com.movies.controller.MoviesController;
 import com.movies.model.Movie;
 import com.movies.service.MoviesService;
 import org.junit.Test;
@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(AddBooksController.class)
+@WebMvcTest(MoviesController.class)
 public class AddBooksTests {
 
   @Autowired

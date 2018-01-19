@@ -1,6 +1,7 @@
 package com.movies;
 
 import com.movies.controller.ViewBooksController;
+import com.movies.model.ListOfMovies;
 import com.movies.model.Movie;
 import com.movies.service.MoviesService;
 import org.junit.Test;
@@ -13,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -40,17 +41,30 @@ public class ViewBooksTests {
 
   @Test
   public void testGetAllMovies() throws Exception {
-    HashMap<Long, String> movies = new HashMap<>();
-    movies.put((long) 1, "Star Wars");
-    movies.put((long) 2, "Conan");
+    ArrayList<ListOfMovies> list = this.createListOfMovies();
 
     given(this.moviesService.getMovies())
-        .willReturn(movies);
+        .willReturn(list);
 
     this.mockMvc.perform(MockMvcRequestBuilders.get("/movies"))
         .andExpect(status().isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("1").value("Star Wars"))
-        .andExpect(MockMvcResultMatchers.jsonPath("2").value("Conan"));
+        .andExpect(MockMvcResultMatchers.jsonPath("$.[0].id").value("1"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.[0].movieTitle").value("Star Wars"));
+  }
+
+  private ArrayList<ListOfMovies> createListOfMovies() {
+    ListOfMovies firstMovie = new ListOfMovies();
+    firstMovie.setId(1L);
+    firstMovie.setMovieTitle("Star Wars");
+
+    ListOfMovies secondMovie = new ListOfMovies();
+    secondMovie.setId(2L);
+    secondMovie.setMovieTitle("Conan");
+
+    ArrayList<ListOfMovies> listOfMovies = new ArrayList<>();
+    listOfMovies.add(firstMovie);
+    listOfMovies.add(secondMovie);
+    return listOfMovies;
   }
 
 }
